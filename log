@@ -84,3 +84,17 @@ Fri 08 Sep 2023 10:54:25 AM UTC:
  tests:  9|3
 total_score: 40/70
 2f9d700
+Fri 08 Sep 2023 10:57:04 AM UTC: 
+ hashmap.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+In file included from test.c:4:
+hashmap.c: In function ‘enlarge’:
+hashmap.c:76:5: error: this ‘if’ clause does not guard... [-Werror=misleading-indentation]
+   76 |     if (map->buckets == NULL)
+      |     ^~
+hashmap.c:78:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   78 |         map->capacity = old_capacity;
+      |         ^~~
+cc1: all warnings being treated as errors
+Compilation failed
+958ecc3
