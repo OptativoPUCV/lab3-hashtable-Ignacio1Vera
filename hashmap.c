@@ -112,9 +112,24 @@ HashMap * createMap(long capacity)
     return map;
 }
 
-void eraseMap(HashMap * map,  char * key) {    
+void eraseMap(HashMap * map, char * key) {
+    if (map == NULL || key == NULL)
+        return;
 
-
+    long position = hash(key, map->capacity);
+    while (map->buckets[position] != NULL) {
+        if (is_equal(map->buckets[position]->key, key)) {
+            free(map->buckets[position]->key);
+            free(map->buckets[position]->value);
+            free(map->buckets[position]);
+            map->buckets[position] = NULL;
+            map->size--;
+            return;
+        }
+        position = (position + 1) % map->capacity;
+        if (position == hash(key, map->capacity))
+            break;
+    }
 }
 
 
@@ -140,22 +155,20 @@ Pair * searchMap(HashMap * map, char * key)
     return NULL;
 }
 
-Pair * firstMap(HashMap * map) 
-{
-    if (map == NULL) {
+Pair * firstMap(HashMap * map) {
+    if (map == NULL || map->size == 0) {
         return NULL;
     }
-    
+
     long position = 0;
-    while (position < map->capacity && map->buckets[position] == NULL) 
+    while (position < map->capacity) {
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
+            map->current = position;
+            return map->buckets[position];
+        }
         position++;
-    
-    if (position < map->capacity) 
-    {
-        map->current = position;
-        return map->buckets[position];
     }
-    
+
     return NULL;
 }
 
