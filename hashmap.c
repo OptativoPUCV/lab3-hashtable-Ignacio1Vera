@@ -118,12 +118,41 @@ Pair * searchMap(HashMap * map, char * key)
     return NULL;
 }
 
-Pair * firstMap(HashMap * map) {
+Pair * firstMap(HashMap * map) 
+{
+    if (map == NULL) {
+        return NULL;
+    }
+    
+    long position = 0;
+    while (position < map->capacity && map->buckets[position] == NULL) 
+        position++;
+    
+    if (position < map->capacity) 
+    {
+        map->current = position;
+        return map->buckets[position];
+    }
+    
+    return NULL;
+}
+
+Pair * nextMap(HashMap * map) 
+{
+    if (map == NULL)
+        return NULL;
+    
+
+    long position = (map->current + 1) % map->capacity;
+    while (position != map->current && (position < map->capacity || map->buckets[position] == NULL))
+        position = (position + 1) % map->capacity;
+
+    if (position != map->current && position < map->capacity) 
+    {
+        map->current = position;
+        return map->buckets[position];
+    }
 
     return NULL;
 }
 
-Pair * nextMap(HashMap * map) {
-
-    return NULL;
-}
