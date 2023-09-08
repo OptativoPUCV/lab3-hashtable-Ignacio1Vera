@@ -98,3 +98,9 @@ hashmap.c:78:9: note: ...this statement, but the latter is misleadingly indented
 cc1: all warnings being treated as errors
 Compilation failed
 958ecc3
+Fri 08 Sep 2023 10:58:12 AM UTC: 
+ hashmap.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests:  10|2
+total_score: 50/70
+d9e11fa
