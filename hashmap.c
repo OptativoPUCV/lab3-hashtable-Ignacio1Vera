@@ -184,28 +184,28 @@ Pair * firstMap(HashMap * map) {
     return NULL;
 }
 
-Pair * nextMap(HashMap * map) 
-{
+Pair * nextMap(HashMap * map) {
     if (map == NULL)
         return NULL;
 
     long position = (map->current + 1) % map->capacity;
     long initial_position = position;
 
-    while (1) 
-    {
+    while (1) {
         if (position >= map->capacity)
             position = 0;
 
-        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) 
-        {
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
             map->current = position;
             return map->buckets[position];
         }
 
         position++;
 
-        if (position == initial_position)
+        if (position == initial_position) {
+            // No se encontró ningún elemento siguiente
+            map->current = -1;
             return NULL;
+        }
     }
 }
