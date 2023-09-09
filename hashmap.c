@@ -195,10 +195,6 @@ Pair * nextMap(HashMap * map) {
         if (position >= map->capacity)
             position = 0;
 
-        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
-            map->current = position;
-            return map->buckets[position];
-        }
 
         position++;
 
