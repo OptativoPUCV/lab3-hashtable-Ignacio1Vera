@@ -112,27 +112,27 @@ HashMap * createMap(long capacity)
     return map;
 }
 
-void eraseMap(HashMap * map, char * key) {
+void eraseMap(HashMap* map, char* key) {
     if (map == NULL || key == NULL)
         return;
 
-    long position = hash(key, map->capacity);
-    long initial_position = position;
+    long i = hash(key, map->capacity);
+    long copia = i;
 
-    while (map->buckets[position] != NULL) {
-        if (is_equal(map->buckets[position]->key, key)) {
-            free(map->buckets[position]->key);
-            free(map->buckets[position]->value);
-            free(map->buckets[position]);
-            map->buckets[position] = NULL;
+    while (1) {
+        Pair* aux = map->buckets[i];
+        if (aux != NULL && strcmp(aux->key, key) == 0) {
             map->size--;
+            map->buckets[i]->key = NULL;
             return;
         }
-        position = (position + 1) % map->capacity;
-        if (position == initial_position)
-            break;
+        i = (i + 1) % map->capacity;
+        if (i == copia) {
+            return;
+        }
     }
 }
+
 
 
 
