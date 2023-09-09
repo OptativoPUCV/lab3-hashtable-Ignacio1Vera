@@ -158,3 +158,13 @@ Sat 09 Sep 2023 01:00:48 AM UTC:
  tests:  11|2
 total_score: 50/70
 32ede3e
+Sat 09 Sep 2023 01:32:50 AM UTC: 
+ hashmap.c | 72 +++++++++++++++++++++------------------------------------------
+ 1 file changed, 24 insertions(+), 48 deletions(-)
+In file included from test.c:4:
+hashmap.c: In function ‘eraseMap’:
+hashmap.c:130:20: error: ‘Pair’ has no member named ‘next’
+  130 |         pair = pair->next;
+      |                    ^~
+Compilation failed
+102b277
