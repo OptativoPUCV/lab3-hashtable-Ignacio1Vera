@@ -177,18 +177,23 @@ Pair * nextMap(HashMap * map) {
         return NULL;
 
     long position = (map->current + 1) % map->capacity;
-    while (position != map->current) {
-        if (position >= map->capacity) {
-            // Si llegamos al final del arreglo, reiniciamos el índice
-            position = 0;
-        }
+    long initial_position = position;
 
-        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
+    while (position != map->current) 
+    {
+        if (position >= map->capacity) 
+            position = 0;
+
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) 
+        {
             map->current = position;
             return map->buckets[position];
         }
 
         position++;
+
+        if (position == initial_position)
+            return NULL;
     }
 
     return NULL;
