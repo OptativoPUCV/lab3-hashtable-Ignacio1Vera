@@ -174,21 +174,24 @@ Pair * firstMap(HashMap * map) {
     return NULL;
 }
 
-Pair * nextMap(HashMap * map) {
+Pair * nextMap(HashMap * map) 
+{
     if (map == NULL)
         return NULL;
 
+    long initialKey = map->current;
     long keyActual = (map->current + 1) % map->capacity;
-    long initialKey = keyActual;
 
-    do {
-        if (map->buckets[keyActual] != NULL && map->buckets[keyActual]->key != NULL) {
+    while (keyActual != initialKey) 
+    {
+        if (map->buckets[keyActual] != NULL && map->buckets[keyActual]->key != NULL) 
+        {
             map->current = keyActual;
             return map->buckets[keyActual];
         }
 
         keyActual = (keyActual + 1) % map->capacity;
-    } while (keyActual != initialKey);
+    }
 
     return NULL;
 }
