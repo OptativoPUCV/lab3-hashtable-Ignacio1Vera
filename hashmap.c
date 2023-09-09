@@ -191,6 +191,7 @@ Pair * nextMap(HashMap * map)
         }
 
         keyActual = (keyActual + 1) % map->capacity;
+        if(map->buckets[keyActual] == firstMap(map)) return NULL;
     }
 
     return NULL;
