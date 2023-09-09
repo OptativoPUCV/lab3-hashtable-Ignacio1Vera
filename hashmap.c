@@ -113,21 +113,33 @@ HashMap * createMap(long capacity)
 }
 
 void eraseMap(HashMap * map, char * key) {
-    if (map == NULL || key == NULL) {
+    if (map == NULL || key == NULL)
         return;
-    }
 
-    long index = hash(key, map->capacity);
-    Pair *pair = map->buckets[index];
+    long position = hash(key, map->capacity);
+    long initial_position = position;
 
-    while (pair != NULL) {
-        if (is_equal(pair->key, key)) {
-            // Mark the pair as invalid by setting key to NULL
-            pair->key = NULL;
+    while (1) {
+        if (position >= map->capacity)
+            position = 0;
+
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL &&
+            is_equal(map->buckets[position]->key, key)) {
+            free(map->buckets[position]->key);
+            free(map->buckets[position]->value);
+            free(map->buckets[position]);
+            map->buckets[position] = NULL;
             map->size--;
-            return; // Key found and erased, exit the function
+
+            if (position == map->current)
+                map->current = -1;
+            return;
         }
-        pair = pair->next;
+
+        position++;
+
+        if (position == initial_position)
+            break;
     }
 }
 
@@ -156,28 +168,29 @@ Pair * searchMap(HashMap * map, char * key)
 }
 
 Pair * firstMap(HashMap * map) {
-    if (map == NULL) {
+    if (map == NULL || map->size == 0)
         return NULL;
-    }
 
-    // Initialize the current index to -1
-    map->current = -1;
-
-    return nextMap(map); // Call nextMap to find the first valid pair
-}
-
-Pair * nextMap(HashMap * map) {
-    if (map == NULL) {
-        return NULL;
-    }
-
-    // Iterate through the buckets to find the next valid pair
-    for (long i = map->current + 1; i < map->capacity; i++) {
-        if (map->buckets[i] != NULL && map->buckets[i]->key != NULL) {
-            map->current = i; // Update the current index
-            return map->buckets[i];
+    for (long position = 0; position < map->capacity; position++) {
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
+            map->current = position;
+            return map->buckets[position];
         }
     }
 
-    return NULL; // No more valid pairs
+    return NULL;
+}
+
+Pair * nextMap(HashMap * map) {
+    if (map == NULL)
+        return NULL;
+
+    for (long position = (map->current + 1) % map->capacity; position != map->current; position = (position + 1) % map->capacity) {
+        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
+            map->current = position;
+            return map->buckets[position];
+        }
+    }
+
+    return NULL;
 }
