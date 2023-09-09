@@ -178,12 +178,17 @@ Pair * nextMap(HashMap * map) {
     if (map == NULL)
         return NULL;
 
-    for (long position = (map->current + 1) % map->capacity; position != map->current; position = (position + 1) % map->capacity) {
-        if (map->buckets[position] != NULL && map->buckets[position]->key != NULL) {
-            map->current = position;
-            return map->buckets[position];
+    long keyActual = (map->current + 1) % map->capacity;
+    long initialKey = keyActual;
+
+    do {
+        if (map->buckets[keyActual] != NULL && map->buckets[keyActual]->key != NULL) {
+            map->current = keyActual;
+            return map->buckets[keyActual];
         }
-    }
+
+        keyActual = (keyActual + 1) % map->capacity;
+    } while (keyActual != initialKey);
 
     return NULL;
 }
